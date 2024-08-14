@@ -1,0 +1,28 @@
+package com.wallet.wallet.domain.dto.request;
+
+import com.wallet.wallet.domain.enums.EIncome;
+import lombok.Data;
+
+import java.time.LocalDate;
+
+@Data
+public class IncomeRequestDto {
+
+    private Long id;
+
+    private Double amount;
+
+    private String description;
+
+    private Long currencyId;
+
+    private Long userId;
+
+    private LocalDate date;
+
+    private Boolean isIncluded;
+
+    private EIncome type;
+
+    private Boolean deleted = Boolean.FALSE;
+}
