@@ -16,6 +16,10 @@ import static org.springframework.http.HttpStatus.*;
 
 public record StudyController(IStudyService service) {
 
+    @GetMapping("/test")
+    public String test(){
+        return "Ok.";
+    }
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody StudyRequestDto dto) {
