@@ -1,11 +1,8 @@
 package com.wallet.wallet.domain.mapper;
 
 import com.wallet.wallet.domain.dto.request.ExhibitionRequestDto;
-import com.wallet.wallet.domain.dto.request.StudyRequestDto;
 import com.wallet.wallet.domain.dto.response.*;
 import com.wallet.wallet.domain.model.Exhibition;
-import com.wallet.wallet.domain.model.Project;
-import com.wallet.wallet.domain.model.Study;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

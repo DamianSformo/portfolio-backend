@@ -7,8 +7,6 @@ import com.wallet.wallet.domain.dto.response.*;
 import com.wallet.wallet.domain.enums.ERecordStatus;
 import com.wallet.wallet.domain.mapper.IMapper;
 import com.wallet.wallet.domain.mapper.StudyMapper;
-import com.wallet.wallet.domain.model.Bio;
-import com.wallet.wallet.domain.model.Project;
 import com.wallet.wallet.domain.model.Study;
 import com.wallet.wallet.domain.repository.IStudyRepository;
 import com.wallet.wallet.handler.exception.ResourceNotFoundException;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.wallet.wallet.domain.enums.EMessageCode.PROJECT_NOT_EXIST_BY_ID;
 import static com.wallet.wallet.domain.enums.EMessageCode.RESOURCE_NOT_FIND_BY_ID;
 
 @AllArgsConstructor
@@ -101,8 +98,8 @@ public class StudyServiceImpl extends GenericServiceImpl<Study, StudyResponseDto
     @Override
     public StudyResponseDto active(Long id) {
         Study existingProject = repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(messenger.getMessage(PROJECT_NOT_EXIST_BY_ID.name(),
-                        new Object[] {id}, Locale.getDefault())));
+                new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
+                        new Object[] {"Study", id}, Locale.getDefault())));
 
         if (ERecordStatus.A.equals(existingProject.getRecordStatus())) {
             existingProject.setRecordStatus(ERecordStatus.D);

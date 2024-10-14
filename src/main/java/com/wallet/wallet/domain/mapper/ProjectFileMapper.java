@@ -2,9 +2,12 @@ package com.wallet.wallet.domain.mapper;
 
 import com.wallet.wallet.domain.dto.request.ProjectFileRequestDto;
 import com.wallet.wallet.domain.dto.response.ProjectFileResponseDto;
+import com.wallet.wallet.domain.dto.response.ProjectFileResponseDtoLang;
 import com.wallet.wallet.domain.model.ProjectFile;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import java.util.List;
 
@@ -17,4 +20,18 @@ public abstract class ProjectFileMapper implements IMapper<ProjectFile, ProjectF
     public abstract ProjectFile requestDtoToEntity(ProjectFileRequestDto projectFileRequestDto);
 
     public abstract List<ProjectFileResponseDto> listEntityToListProjectFileDto(List<ProjectFile> projectFiles);
+
+    @Named("entityToResponseDtoEs")
+    @Mapping(source = "textEs", target = "text")
+    public abstract ProjectFileResponseDtoLang entityToResponseDtoEs(ProjectFile projectFile);
+
+    @Named("entityToResponseDtoEn")
+    @Mapping(source = "textEn", target = "text")
+    public abstract ProjectFileResponseDtoLang entityToResponseDtoEn(ProjectFile projectFile);
+
+    @IterableMapping(qualifiedByName = "entityToResponseDtoEs")
+    public abstract List<ProjectFileResponseDtoLang> listEntityToListProjectFileDtoEs(List<ProjectFile> projectFiles);
+
+    @IterableMapping(qualifiedByName = "entityToResponseDtoEn")
+    public abstract List<ProjectFileResponseDtoLang> listEntityToListProjectFileDtoEn(List<ProjectFile> projectFiles);
 }

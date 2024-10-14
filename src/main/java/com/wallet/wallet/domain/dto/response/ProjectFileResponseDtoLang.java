@@ -1,18 +1,15 @@
 package com.wallet.wallet.domain.dto.response;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class ProjectFileResponseDto {
+public class ProjectFileResponseDtoLang {
 
     private String type;
 
     private String url;
 
-    private String textEs;
-
-    private String textEn;
+    private String text;
 
     private Boolean isCover;
 

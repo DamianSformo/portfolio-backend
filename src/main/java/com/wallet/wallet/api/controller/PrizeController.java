@@ -1,9 +1,11 @@
 package com.wallet.wallet.api.controller;
 
 import com.wallet.wallet.api.service.IExhibitionService;
-import com.wallet.wallet.api.service.IProjectService;
+import com.wallet.wallet.api.service.IPrizeService;
 import com.wallet.wallet.domain.dto.request.ExhibitionRequestDto;
-
+import com.wallet.wallet.domain.dto.request.PrizeRequestDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,17 +13,17 @@ import static com.wallet.wallet.handler.ResponseBuilder.responseBuilder;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("/exhibition")
-public record ExhibitionController(IExhibitionService service) {
+@RequestMapping("/prize")
+@Tag(name = "Prize", description = "Controlador para gestionar Becas, Premios y Residencia")
+public record PrizeController(IPrizeService service) {
 
-
+    @Operation(summary = "Guardar una Beca, Premio y Residencia", description = "Devuelve la Beca, Premio o Residencia guardado")
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody ExhibitionRequestDto dto) {
-        return responseBuilder(CREATED, service.save(dto));
+    public ResponseEntity<?> save(@RequestBody PrizeRequestDto prizeRequestDto) {
+        return responseBuilder(CREATED, service.save(prizeRequestDto));
     }
 
-    /*
-    @ApiOperation(value = "Find Expense by Id by User")
+    @Operation(summary = "Traer una Beca, Premio y Residencia por ID", description = "Devuelve la Beca, Premio o Residencia buscado")
     @GetMapping("/getById/{id}")
     //@PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<?> getById(@PathVariable Long id, @RequestParam(required = false) String lang) {
@@ -33,9 +35,8 @@ public record ExhibitionController(IExhibitionService service) {
             default -> responseBuilder(BAD_REQUEST, "Unsupported language: " + lang);
         };
     }
-    */
 
-
+    @Operation(summary = "Traer las Becas, Premios y Residencias activadas", description = "Devuelve las Becas, Premios y Residencias activadas")
     @GetMapping("/getView")
     //@PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<?> getView(@RequestParam(required = false) String lang){
@@ -48,34 +49,18 @@ public record ExhibitionController(IExhibitionService service) {
         };
     }
 
-
     @GetMapping("/getAll")
     //@PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<?> getAll(){
         return responseBuilder(OK, service.getAll());
     }
 
-
-    @GetMapping("/getComplete")
+    @Operation(summary = "Modificar una Beca, Premio o Residencia", description = "Devuelve la Beca, Premio o Residencia modificado")
+    @PostMapping("/update/{id}")
     //@PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<?> getComplete(@RequestParam(required = false) String lang){
-        if (lang == null) {
-            return responseBuilder(OK, service.getView());
-        }
-        return switch (lang) {
-            case "es", "en" -> responseBuilder(OK, service.getComplete(lang));
-            default -> responseBuilder(BAD_REQUEST, "Unsupported language: " + lang);
-        };
+    public ResponseEntity<?> update(@RequestBody PrizeRequestDto prizeRequestDto, @PathVariable Long id){
+        return responseBuilder(OK, service.update(prizeRequestDto, id));
     }
-
-    /*
-    @ApiOperation(value = "Find Expense by Id by User")
-    @PostMapping("/update/{ }")
-    //@PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<?> update(@RequestBody ProjectRequestDto projectRequestDto, @PathVariable Long id){
-        return responseBuilder(OK, service.update(projectRequestDto, id));
-    }
-    */
 
 
     @DeleteMapping("/delete/{id}")

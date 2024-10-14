@@ -1,10 +1,7 @@
 package com.wallet.wallet.domain.mapper;
 
-import com.sendgrid.Response;
 import com.wallet.wallet.domain.dto.request.StudyRequestDto;
 import com.wallet.wallet.domain.dto.response.*;
-import com.wallet.wallet.domain.model.Bio;
-import com.wallet.wallet.domain.model.Project;
 import com.wallet.wallet.domain.model.Study;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;

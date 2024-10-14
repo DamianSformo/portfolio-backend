@@ -1,5 +1,6 @@
 package com.wallet.wallet.domain.dto.response;
 
+import com.wallet.wallet.domain.enums.ERecordStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -22,9 +23,17 @@ public class ProjectResponseDto {
 
     private String textEn;
 
+    private String site;
+
+    private String techniqueEs;
+
+    private String techniqueEn;
+
     private Integer year;
 
     private Integer orderIndex;
 
     private List<ProjectFileResponseDto> projectFiles;
+
+    private ERecordStatus recordStatus;
 }

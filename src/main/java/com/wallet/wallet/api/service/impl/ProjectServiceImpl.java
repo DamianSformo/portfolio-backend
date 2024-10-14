@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.wallet.wallet.domain.enums.EMessageCode.PROJECT_NOT_EXIST_BY_ID;
 import static com.wallet.wallet.domain.enums.EMessageCode.RESOURCE_NOT_FIND_BY_ID;
 import static com.wallet.wallet.handler.ResponseBuilder.responseBuilder;
 
@@ -30,8 +29,8 @@ import static com.wallet.wallet.handler.ResponseBuilder.responseBuilder;
 public class ProjectServiceImpl extends GenericServiceImpl<Project, ProjectResponseDto, ProjectRequestDto, Long> implements IProjectService {
 
     private final ProjectMapper mapper;
-    private final ProjectFileMapper projectFileMapper;
     private final IProjectRepository repository;
+    private final ProjectFileMapper projectFileMapper;
     private final IProjectFileRepository projectFileRepository;
 
     private final MessageSource messenger;
@@ -52,23 +51,29 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, ProjectRespo
     public ProjectResponseDtoLang getByIdLang(Long id, String lang) {
         Project existing = repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
-                        new Object[] {id}, Locale.getDefault())));
+                        new Object[] {"Project", id}, Locale.getDefault())));
 
         ProjectResponseDtoLang projectResponseDtoLen = new ProjectResponseDtoLang();
         switch (lang) {
-            case "es" -> projectResponseDtoLen = mapper.entityToResponseDtoEs(existing);
-            case "en" -> projectResponseDtoLen = mapper.entityToResponseDtoEn(existing);
+            case "es" -> {
+                projectResponseDtoLen = mapper.entityToResponseDtoEs(existing);
+                projectResponseDtoLen.setProjectFiles(projectFileMapper.listEntityToListProjectFileDtoEs(projectFileRepository.getProjectFileByProjectId(id)));
+            }
+            case "en" -> {
+                projectResponseDtoLen = mapper.entityToResponseDtoEn(existing);
+                projectResponseDtoLen.setProjectFiles(projectFileMapper.listEntityToListProjectFileDtoEn(projectFileRepository.getProjectFileByProjectId(id)));
+
+            }
         };
 
-        projectResponseDtoLen.setProjectFiles(projectFileMapper.listEntityToListProjectFileDto(projectFileRepository.getProjectFileByProjectId(id)));
         return projectResponseDtoLen;
     }
 
     @Override
     public ProjectResponseDto update(ProjectRequestDto projectRequestDto, Long id) {
         Project existingProject = repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(messenger.getMessage(PROJECT_NOT_EXIST_BY_ID.name(),
-                        new Object[] {id}, Locale.getDefault())));
+                new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
+                        new Object[] {"Project", id}, Locale.getDefault())));
 
         mapper.updateEntityFromRequestDto(projectRequestDto, existingProject);
         repository.save(existingProject);
@@ -94,14 +99,21 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, ProjectRespo
 
         List<ProjectResponseDtoLang> listProjectResponseDtoLang = new ArrayList<>();
         switch (lang) {
-            case "es" -> listProjectResponseDtoLang = mapper.listEntityToListProjectDtoEs(listProject);
-            case "en" -> listProjectResponseDtoLang = mapper.listEntityToListProjectDtoEn(listProject);
+            case "es" -> {
+                listProjectResponseDtoLang = mapper.listEntityToListProjectDtoEs(listProject);
+                for (ProjectResponseDtoLang projectResponseDtoLang : listProjectResponseDtoLang) {
+                    Long projectId = projectResponseDtoLang.getId();
+                    projectResponseDtoLang.setProjectFiles(projectFileMapper.listEntityToListProjectFileDtoEs(projectFileRepository.getProjectFileByProjectId(projectId)));
+                }
+            }
+            case "en" -> {
+                listProjectResponseDtoLang = mapper.listEntityToListProjectDtoEn(listProject);
+                for (ProjectResponseDtoLang projectResponseDtoLang : listProjectResponseDtoLang) {
+                    Long projectId = projectResponseDtoLang.getId();
+                    projectResponseDtoLang.setProjectFiles(projectFileMapper.listEntityToListProjectFileDtoEn(projectFileRepository.getProjectFileByProjectId(projectId)));
+                }
+            }
         };
-
-        for (ProjectResponseDtoLang projectResponseDtoLang : listProjectResponseDtoLang) {
-            Long projectId = projectResponseDtoLang.getId();
-            projectResponseDtoLang.setProjectFiles(projectFileMapper.listEntityToListProjectFileDto(projectFileRepository.getProjectFileByProjectId(projectId)));
-        }
 
         return listProjectResponseDtoLang;
     }
@@ -132,8 +144,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<Project, ProjectRespo
     @Override
     public ProjectResponseDto active(Long id) {
         Project existingProject = repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(messenger.getMessage(PROJECT_NOT_EXIST_BY_ID.name(),
-                        new Object[] {id}, Locale.getDefault())));
+                new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
+                        new Object[] {"Project", id}, Locale.getDefault())));
 
         if (ERecordStatus.A.equals(existingProject.getRecordStatus())) {
             existingProject.setRecordStatus(ERecordStatus.D);

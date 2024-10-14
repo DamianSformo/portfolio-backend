@@ -3,8 +3,10 @@ package com.wallet.wallet.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wallet.wallet.domain.enums.ERecordStatus;
 import lombok.Data;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -21,33 +23,33 @@ public class ProjectFile {
     //@NotNull
     private String type;
 
-    @Column(name = "url", nullable = true)
-    //@NotNull
+    @Column(nullable = false)
+    @NotNull
     private String url;
 
-    @Column(name = "text_es", nullable = true)
-    //@NotNull
+    @Column(name = "text_es", nullable = false)
+    @NotNull
     private String textEs;
 
-    @Column(name = "text_en", nullable = true)
-    //@NotNull
+    @Column(name = "text_en", nullable = false)
+    @NotNull
     private String textEn;
 
-    @Column(nullable = true)
+    @Column(name = "is_cover", nullable = true)
     //@NotNull
     private Boolean isCover;
 
     @Column(name = "order_index", nullable = true)
     private Integer orderIndex;
 
+    @Column(name = "record_update")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "record_update", nullable = true)
-    //@NotNull
+    @UpdateTimestamp
     private Date recordUpdate;
 
-    @Column(name = "record_status", nullable = true, columnDefinition = "VARCHAR(2) DEFAULT 'A'")
+    @Column(name = "record_status", nullable = false, columnDefinition = "VARCHAR(2) DEFAULT 'A'")
     @Enumerated(EnumType.STRING)
-    //@NotBlank
+    @NotNull
     private ERecordStatus recordStatus = ERecordStatus.A;
 
     @ManyToOne

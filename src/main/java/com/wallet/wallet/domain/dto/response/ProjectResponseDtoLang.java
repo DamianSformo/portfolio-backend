@@ -24,5 +24,5 @@ public class ProjectResponseDtoLang {
 
     private Integer orderIndex;
 
-    private List<ProjectFileResponseDto> projectFiles;
+    private List<ProjectFileResponseDtoLang> projectFiles;
 }

@@ -1,20 +1,14 @@
 package com.wallet.wallet.api.service.impl;
 
 import com.wallet.wallet.api.service.IExhibitionService;
-import com.wallet.wallet.api.service.IStudyService;
 import com.wallet.wallet.api.service.generic.GenericServiceImpl;
 import com.wallet.wallet.domain.dto.request.ExhibitionRequestDto;
-import com.wallet.wallet.domain.dto.request.StudyRequestDto;
 import com.wallet.wallet.domain.dto.response.*;
 import com.wallet.wallet.domain.enums.ERecordStatus;
 import com.wallet.wallet.domain.mapper.ExhibitionMapper;
 import com.wallet.wallet.domain.mapper.IMapper;
-import com.wallet.wallet.domain.mapper.StudyMapper;
 import com.wallet.wallet.domain.model.Exhibition;
-import com.wallet.wallet.domain.model.Project;
-import com.wallet.wallet.domain.model.Study;
 import com.wallet.wallet.domain.repository.IExhibitionRepository;
-import com.wallet.wallet.domain.repository.IStudyRepository;
 import com.wallet.wallet.handler.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -25,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.wallet.wallet.domain.enums.EMessageCode.PROJECT_NOT_EXIST_BY_ID;
 import static com.wallet.wallet.domain.enums.EMessageCode.RESOURCE_NOT_FIND_BY_ID;
 
 @AllArgsConstructor
@@ -34,6 +27,8 @@ public class ExhibitionServiceImpl extends GenericServiceImpl<Exhibition, Exhibi
 
     private final ExhibitionMapper mapper;
     private final IExhibitionRepository repository;
+
+    private final PrizeServiceImpl prizeService;
 
     private final MessageSource messenger;
 
@@ -89,24 +84,26 @@ public class ExhibitionServiceImpl extends GenericServiceImpl<Exhibition, Exhibi
         List<Exhibition> listExhibitionGroup = repository.getExhibitionGroup();
         List<Exhibition> listExhibitionIndividual = repository.getExhibitionIndividual();
 
-        System.out.println(listExhibitionGroup);
-        System.out.println(listExhibitionIndividual);
-
         List<ExhibitionResponseDtoLang> listExhibitionGroupLang = new ArrayList<>();
-        switch (lang) {
-            case "es" -> listExhibitionGroupLang = mapper.listEntityToListProjectDtoEs(listExhibitionGroup);
-            case "en" -> listExhibitionGroupLang = mapper.listEntityToListProjectDtoEn(listExhibitionGroup);
-        };
-
         List<ExhibitionResponseDtoLang> listExhibitionIndividualLang = new ArrayList<>();
+        List<PrizeResponseDtoLang> listPrizeResponseDtoLang = new ArrayList<>();
         switch (lang) {
-            case "es" -> listExhibitionIndividualLang = mapper.listEntityToListProjectDtoEs(listExhibitionIndividual);
-            case "en" -> listExhibitionIndividualLang = mapper.listEntityToListProjectDtoEn(listExhibitionIndividual);
+            case "es" -> {
+                listExhibitionGroupLang = mapper.listEntityToListProjectDtoEs(listExhibitionGroup);
+                listExhibitionIndividualLang = mapper.listEntityToListProjectDtoEs(listExhibitionIndividual);
+                listPrizeResponseDtoLang = prizeService.getViewLang("es");
+            }
+            case "en" -> {
+                listExhibitionGroupLang = mapper.listEntityToListProjectDtoEn(listExhibitionGroup);
+                listExhibitionIndividualLang = mapper.listEntityToListProjectDtoEn(listExhibitionIndividual);
+                listPrizeResponseDtoLang = prizeService.getViewLang("en");
+            }
         };
 
         ExhibitionCompleteResponseDtoLang exhibitionCompleteResponseDtoLang = new ExhibitionCompleteResponseDtoLang();
         exhibitionCompleteResponseDtoLang.setExhibitionGroup(listExhibitionGroupLang);
         exhibitionCompleteResponseDtoLang.setExhibitionIndividual(listExhibitionIndividualLang);
+        exhibitionCompleteResponseDtoLang.setPrizes(listPrizeResponseDtoLang);
 
         return exhibitionCompleteResponseDtoLang;
     }
@@ -114,8 +111,8 @@ public class ExhibitionServiceImpl extends GenericServiceImpl<Exhibition, Exhibi
     @Override
     public ExhibitionResponseDto active(Long id) {
         Exhibition existing = repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(messenger.getMessage(PROJECT_NOT_EXIST_BY_ID.name(),
-                        new Object[] {id}, Locale.getDefault())));
+                new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
+                        new Object[] {"Exhibition", id}, Locale.getDefault())));
 
         if (ERecordStatus.A.equals(existing.getRecordStatus())) {
             existing.setRecordStatus(ERecordStatus.D);

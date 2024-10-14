@@ -9,22 +9,18 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ProjectFileRequestDto {
 
-    @Schema(type = "string", example = "100.5")
     private String type;
 
-    @Schema(type = "string", example = "100.5")
     private String url;
 
-    @Schema(type = "string", example = "100.5")
     private String textEs;
 
-    @Schema(type = "string", example = "100.5")
     private String textEn;
 
-    @Schema(type = "string", example = "100.5")
+    private Boolean isCover;
+
     private Integer orderIndex;
 
-    @Schema(type = "long", example = "1")
     private Long projectId;
 
 }
