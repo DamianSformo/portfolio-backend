@@ -186,6 +186,7 @@
 
 	<build>
 		<plugins>
+			<!-- Plugin para Spring Boot -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -196,6 +197,17 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<!-- Plugin para controlar la compilación con la versión de Java -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version> <!-- Usa la última versión disponible -->
+				<configuration>
+					<source>21</source> <!-- Define la versión del JDK -->
+					<target>21</target> <!-- Define la versión del JDK -->
 				</configuration>
 			</plugin>
 		</plugins>
