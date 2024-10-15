@@ -34,7 +34,3 @@ api.key.fixer:
 api.url.fixer:
 api.header-field.fixer:
 
-# Api-SendGrid KEY:
-api.key.sendgrid:
-api.template.welcome.id:
-app.email:
