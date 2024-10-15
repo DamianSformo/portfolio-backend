@@ -29,8 +29,8 @@ spring:
 server:
   port: 8080
 
-# Api-Fixer KEY:
-api.key.fixer:
-api.url.fixer:
-api.header-field.fixer:
-
+logging:
+  level:
+    root: DEBUG  # Cambia a DEBUG para más detalles
+    org.springframework: DEBUG  # Cambia a DEBUG para más detalles
+    com.wallet: DEBUG
