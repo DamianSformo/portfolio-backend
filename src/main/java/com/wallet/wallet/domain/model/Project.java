@@ -6,13 +6,14 @@ import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "project")
+@Table(name = "project", indexes = {
+        @Index(name = "idx_record_status", columnList = "record_status")
+})
 @Data
 public class Project {
 
@@ -22,7 +23,7 @@ public class Project {
     private Long id;
 
     @Column(name = "title_es", nullable = false)
-    @NotBlank
+    @NotNull
     private String titleEs;
 
     @Column(name = "title_en", nullable = false)
@@ -81,9 +82,4 @@ public class Project {
     @JsonIgnore
     private List<ProjectFile> projectFiles;
 
-    //@PrePersist
-    //@PreUpdate
-    //protected void onUpdate() {
-    //    recordUpdate = new Date();
-    //}
 }

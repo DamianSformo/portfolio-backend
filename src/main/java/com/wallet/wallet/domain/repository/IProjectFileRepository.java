@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface IProjectFileRepository extends JpaRepository<ProjectFile, Long> {
 
-    @Query("SELECT pf FROM ProjectFile pf WHERE pf.project.id = ?1")
+    @Query("SELECT pf FROM ProjectFile pf WHERE pf.project.id = ?1 ORDER BY pf.orderIndex")
     List<ProjectFile> getProjectFileByProjectId(Long id);
 
     @Query("SELECT pf FROM ProjectFile pf WHERE pf.project.id = ?1 AND isCover is TRUE")

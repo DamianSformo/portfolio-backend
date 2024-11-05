@@ -2,9 +2,9 @@ package com.wallet.wallet.domain.model;
 
 import com.wallet.wallet.domain.enums.ERecordStatus;
 import lombok.Data;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -18,58 +18,60 @@ public class Bio {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bioSequence")
     private Long id;
 
-    @NotBlank
+    @Column(nullable = false)
+    @NotNull
     private String name;
 
-    @Column(name = "url_photo")
-    @NotBlank
+    @Column(name = "url_photo", nullable = false)
+    @NotNull
     private String urlPhoto;
 
-    @Column(name = "text_photo_es")
-    @NotBlank
+    @Column(name = "text_photo_es", nullable = false)
+    @NotNull
     private String textPhotoEs;
 
-    @Column(name = "text_photo_en")
+    @Column(name = "text_photo_en", nullable = false)
     @NotNull
     private String textPhotoEn;
 
-    @Column(name = "bio_es", columnDefinition = "TEXT")
-    @NotBlank
+    @Lob
+    @Column(name = "bio_es", nullable = false)
+    @NotNull
     private String bioEs;
 
-    @Column(name = "bio_en", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "bio_en", nullable = false)
     @NotNull
     private String bioEn;
 
-    @Column(name = "bio_short_es", columnDefinition = "TEXT")
-    @NotBlank
+    @Lob
+    @Column(name = "bio_short_es", nullable = false)
+    @NotNull
     private String bioShortEs;
 
-    @Column(name = "bio_short_en", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "bio_short_en", nullable = false)
     @NotNull
     private String bioShortEn;
 
-    @Column(name = "statement_es", columnDefinition = "TEXT")
-    @NotBlank
+    @Lob
+    @Column(name = "statement_es", nullable = false)
+    @NotNull
     private String statementEs;
 
-    @Column(name = "statement_en", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "statement_en", nullable = false)
     @NotNull
     private String statementEn;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "record_update")
-    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
     private Date recordUpdate;
 
-    @Column(name = "record_status", columnDefinition = "VARCHAR(2) DEFAULT 'A'")
+    @Column(name = "record_status", nullable = false, columnDefinition = "VARCHAR(2) DEFAULT 'A'")
     @Enumerated(EnumType.STRING)
     @NotNull
     private ERecordStatus recordStatus = ERecordStatus.A;
 
-    @PrePersist
-    @PreUpdate
-    protected void onUpdate() {
-        recordUpdate = new Date();
-    }
 }
