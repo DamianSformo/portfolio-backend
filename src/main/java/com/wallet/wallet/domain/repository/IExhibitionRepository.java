@@ -11,15 +11,15 @@ import java.util.List;
 @Repository
 public interface IExhibitionRepository extends JpaRepository<Exhibition, Long> {
 
-    @Query("SELECT e FROM Exhibition e WHERE e.recordStatus = 'A'")
+    @Query("SELECT e FROM Exhibition e WHERE e.recordStatus = 'A' ORDER BY e.year DESC")
     List<Exhibition> getView();
 
-    @Query("SELECT e FROM Exhibition e")
+    @Query("SELECT e FROM Exhibition e ORDER BY e.year DESC")
     List<Exhibition> getAll();
 
-    @Query("SELECT e FROM Exhibition e WHERE e.type = 'Group'")
+    @Query("SELECT e FROM Exhibition e WHERE e.type = 'Group' AND  e.recordStatus = 'A' ORDER BY e.year DESC")
     List<Exhibition> getExhibitionGroup();
 
-    @Query("SELECT e FROM Exhibition e WHERE e.type = 'Individual'")
+    @Query("SELECT e FROM Exhibition e WHERE e.type = 'Individual' AND e.recordStatus = 'A' ORDER BY e.year DESC")
     List<Exhibition> getExhibitionIndividual();
 }

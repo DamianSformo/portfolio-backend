@@ -45,9 +45,6 @@ public class Exhibition {
     @NotNull
     private String textEn;
 
-    @Column(name = "order_index", nullable = true)
-    private Integer orderIndex;
-
     @Column(name = "record_update")
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp

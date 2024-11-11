@@ -18,10 +18,6 @@ public class Bio {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bioSequence")
     private Long id;
 
-    @Column(nullable = false)
-    @NotNull
-    private String name;
-
     @Column(name = "url_photo", nullable = false)
     @NotNull
     private String urlPhoto;
@@ -43,16 +39,6 @@ public class Bio {
     @Column(name = "bio_en", nullable = false)
     @NotNull
     private String bioEn;
-
-    @Lob
-    @Column(name = "bio_short_es", nullable = false)
-    @NotNull
-    private String bioShortEs;
-
-    @Lob
-    @Column(name = "bio_short_en", nullable = false)
-    @NotNull
-    private String bioShortEn;
 
     @Lob
     @Column(name = "statement_es", nullable = false)

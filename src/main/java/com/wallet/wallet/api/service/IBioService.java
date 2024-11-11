@@ -2,15 +2,11 @@ package com.wallet.wallet.api.service;
 
 import com.wallet.wallet.api.service.generic.GenericServiceAPI;
 import com.wallet.wallet.domain.dto.request.BioRequestDto;
-import com.wallet.wallet.domain.dto.request.ProjectRequestDto;
 import com.wallet.wallet.domain.dto.response.BioResponseDto;
-import com.wallet.wallet.domain.dto.response.BioResponseDtoEn;
-import com.wallet.wallet.domain.dto.response.BioResponseDtoEs;
-import com.wallet.wallet.domain.dto.response.ProjectResponseDto;
+import com.wallet.wallet.domain.dto.response.BioResponseDtoLang;
+import com.wallet.wallet.domain.dto.response.StatementResponseDto;
+import com.wallet.wallet.domain.dto.response.StatementResponseDtoLang;
 import com.wallet.wallet.domain.model.Bio;
-import com.wallet.wallet.domain.model.Project;
-
-import java.util.List;
 
 public interface IBioService extends GenericServiceAPI<Bio, BioResponseDto, BioRequestDto, Long> {
 
@@ -18,9 +14,11 @@ public interface IBioService extends GenericServiceAPI<Bio, BioResponseDto, BioR
 
     BioResponseDto getById(Long id);
 
-    BioResponseDtoEs getByIdEs(Long id);
+    BioResponseDtoLang getByIdLang(Long id, String lang);
 
-    BioResponseDtoEn getByIdEn(Long id);
+    StatementResponseDto getStatementById(Long id);
+
+    StatementResponseDtoLang getStatementByIdLang(Long id, String lang);
 
     BioResponseDto update(BioRequestDto bioRequestDto, Long id);
 

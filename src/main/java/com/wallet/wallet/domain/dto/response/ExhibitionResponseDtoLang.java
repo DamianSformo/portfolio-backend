@@ -22,6 +22,4 @@ public class ExhibitionResponseDtoLang {
     @Schema(type = "boolean", example = "true")
     private String text;
 
-    @Schema(type = "boolean", example = "true")
-    private Integer orderIndex;
 }

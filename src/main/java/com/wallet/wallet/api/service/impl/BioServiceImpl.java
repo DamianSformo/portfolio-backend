@@ -4,8 +4,9 @@ import com.wallet.wallet.api.service.IBioService;
 import com.wallet.wallet.api.service.generic.GenericServiceImpl;
 import com.wallet.wallet.domain.dto.request.BioRequestDto;
 import com.wallet.wallet.domain.dto.response.BioResponseDto;
-import com.wallet.wallet.domain.dto.response.BioResponseDtoEn;
-import com.wallet.wallet.domain.dto.response.BioResponseDtoEs;
+import com.wallet.wallet.domain.dto.response.BioResponseDtoLang;
+import com.wallet.wallet.domain.dto.response.StatementResponseDto;
+import com.wallet.wallet.domain.dto.response.StatementResponseDtoLang;
 import com.wallet.wallet.domain.mapper.BioMapper;
 import com.wallet.wallet.domain.mapper.IMapper;
 import com.wallet.wallet.domain.model.Bio;
@@ -16,7 +17,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
 import java.util.Locale;
+import java.util.Optional;
 
 import static com.wallet.wallet.domain.enums.EMessageCode.RESOURCE_NOT_FIND_BY_ID;
 
@@ -41,21 +44,42 @@ public class BioServiceImpl extends GenericServiceImpl<Bio, BioResponseDto, BioR
     }
 
     @Override
-    public BioResponseDtoEs getByIdEs(Long id) {
+    public BioResponseDtoLang getByIdLang(Long id, String lang) {
         Bio existingBio = repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
                         new Object[] {id}, Locale.getDefault())));
 
-        return mapper.entityToResponseDtoEs(existingBio);
+        BioResponseDtoLang bio = new BioResponseDtoLang();
+        switch (lang) {
+            case "es" -> bio = mapper.entityToResponseDtoEs(existingBio);
+            case "en" -> bio = mapper.entityToResponseDtoEn(existingBio);
+        };
+
+        return bio;
     }
 
     @Override
-    public BioResponseDtoEn getByIdEn(Long id) {
-        Bio existingBio = repository.findById(id).orElseThrow(() ->
+    public StatementResponseDto getStatementById(Long id) {
+        return repository.getStatement(id).orElseThrow(() ->
                 new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
                         new Object[] {id}, Locale.getDefault())));
+    }
 
-        return mapper.entityToResponseDtoEn(existingBio);
+    @Override
+    public StatementResponseDtoLang getStatementByIdLang(Long id, String lang) {
+        return repository.getStatement(id)
+                .map(statementResponseDto -> {
+                    switch (lang) {
+                        case "es":
+                            return mapper.statementEntityToResponseDtoEs(statementResponseDto);
+                        case "en":
+                            return mapper.statementEntityToResponseDtoEn(statementResponseDto);
+                        default:
+                            throw new IllegalArgumentException("Lenguaje no soportado: " + lang);
+                    }
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
+                        new Object[] {id}, Locale.getDefault())));
     }
 
     @Override

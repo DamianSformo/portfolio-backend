@@ -25,6 +25,4 @@ public class ExhibitionRequestDto {
     @Schema(type = "boolean", example = "true")
     private String textEn;
 
-    @Schema(type = "boolean", example = "true")
-    private Integer orderIndex;
 }

@@ -10,9 +10,6 @@ public class BioResponseDto {
     private Long id;
 
     @Schema(type = "string", example = "test")
-    private String name;
-
-    @Schema(type = "string", example = "test")
     private String urlPhoto;
 
     @Schema(type = "string", example = "test")
@@ -26,16 +23,4 @@ public class BioResponseDto {
 
     @Schema(type = "string", example = "test")
     private String bioEn;
-
-    @Schema(type = "string", example = "test")
-    private String bioShortEs;
-
-    @Schema(type = "string", example = "test")
-    private String bioShortEn;
-
-    @Schema(type = "string", example = "test")
-    private String statementEs;
-
-    @Schema(type = "string", example = "test")
-    private String statementEn;
 }

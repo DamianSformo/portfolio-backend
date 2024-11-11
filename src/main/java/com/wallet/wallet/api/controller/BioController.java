@@ -27,12 +27,22 @@ public record BioController(IBioService service) {
             return responseBuilder(OK, service.getById(id));
         }
         return switch (lang) {
-            case "es" -> responseBuilder(OK, service.getByIdEs(id));
-            case "en" -> responseBuilder(OK, service.getByIdEn(id));
+            case "es", "en" -> responseBuilder(OK, service.getByIdLang(id, lang));
             default -> responseBuilder(BAD_REQUEST, "Unsupported language: " + lang);
         };
     }
 
+    @GetMapping("/getStatementById/{id}")
+    //@PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<?> getStatementById(@PathVariable Long id, @RequestParam(required = false) String lang) {
+        if (lang == null) {
+            return responseBuilder(OK, service.getStatementById(id));
+        }
+        return switch (lang) {
+            case "es", "en" -> responseBuilder(OK, service.getStatementByIdLang(id, lang));
+            default -> responseBuilder(BAD_REQUEST, "Unsupported language: " + lang);
+        };
+    }
 
     @PostMapping("/update/{id}")
     //@PreAuthorize("hasAuthority('USER')")

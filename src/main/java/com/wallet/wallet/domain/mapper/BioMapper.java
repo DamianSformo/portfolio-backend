@@ -2,11 +2,15 @@ package com.wallet.wallet.domain.mapper;
 
 import com.wallet.wallet.domain.dto.request.BioRequestDto;
 import com.wallet.wallet.domain.dto.response.BioResponseDto;
-import com.wallet.wallet.domain.dto.response.BioResponseDtoEn;
-import com.wallet.wallet.domain.dto.response.BioResponseDtoEs;
+import com.wallet.wallet.domain.dto.response.BioResponseDtoLang;
+import com.wallet.wallet.domain.dto.response.StatementResponseDto;
+import com.wallet.wallet.domain.dto.response.StatementResponseDtoLang;
 import com.wallet.wallet.domain.model.Bio;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+
+import javax.persistence.Tuple;
 
 @Mapper(componentModel = "spring")
 public abstract class BioMapper implements IMapper<Bio, BioResponseDto, BioRequestDto> {
@@ -15,22 +19,25 @@ public abstract class BioMapper implements IMapper<Bio, BioResponseDto, BioReque
 
     public abstract Bio requestDtoToEntity(BioRequestDto bioRequestDto);
 
+    @Named("statementEntityToResponseDtoEs")
+    @Mapping(source = "statementEs", target = "statement")
+    public abstract StatementResponseDtoLang statementEntityToResponseDtoEs(StatementResponseDto statementResponseDto);
+
+    @Named("statementEntityToResponseDtoEn")
+    @Mapping(source = "statementEn", target = "statement")
+    public abstract StatementResponseDtoLang statementEntityToResponseDtoEn(StatementResponseDto statementResponseDto);
+
+    @Named("statementEntityToResponseDtoEs")
     @Mapping(source = "textPhotoEs", target = "textPhoto")
     @Mapping(source = "bioEs", target = "bio")
-    @Mapping(source = "bioShortEs", target = "bioShort")
-    @Mapping(source = "statementEs", target = "statement")
-    public abstract BioResponseDtoEs entityToResponseDtoEs(Bio bio);
+    public abstract BioResponseDtoLang entityToResponseDtoEs(Bio bio);
 
+    @Named("entityToResponseDtoEn")
     @Mapping(source = "textPhotoEn", target = "textPhoto")
     @Mapping(source = "bioEn", target = "bio")
-    @Mapping(source = "bioShortEn", target = "bioShort")
-    @Mapping(source = "statementEn", target = "statement")
-    public abstract BioResponseDtoEn entityToResponseDtoEn(Bio bio);
+    public abstract BioResponseDtoLang entityToResponseDtoEn(Bio bio);
 
     public void updateEntityFromRequestDto(BioRequestDto dto, Bio bio) {
-        if (dto.getName() != null) {
-            bio.setName(dto.getName());
-        }
         if (dto.getUrlPhoto() != null) {
             bio.setUrlPhoto(dto.getUrlPhoto());
         }
@@ -45,12 +52,6 @@ public abstract class BioMapper implements IMapper<Bio, BioResponseDto, BioReque
         }
         if (dto.getBioEn() != null) {
             bio.setBioEn(dto.getBioEn());
-        }
-        if (dto.getBioShortEs() != null) {
-            bio.setBioShortEs(dto.getBioShortEs());
-        }
-        if (dto.getBioShortEn() != null) {
-            bio.setBioShortEn(dto.getBioShortEn());
         }
         if (dto.getStatementEs() != null) {
             bio.setStatementEs(dto.getStatementEs());

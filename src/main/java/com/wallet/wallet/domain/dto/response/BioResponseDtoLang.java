@@ -4,13 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class BioResponseDtoEs {
+public class BioResponseDtoLang {
 
     @Schema(type = "long", example = "test")
     private Long id;
-
-    @Schema(type = "string", example = "test")
-    private String name;
 
     @Schema(type = "string", example = "test")
     private String urlPhoto;
@@ -20,11 +17,4 @@ public class BioResponseDtoEs {
 
     @Schema(type = "string", example = "test")
     private String bio;
-
-    @Schema(type = "string", example = "test")
-    private String bioShort;
-
-    @Schema(type = "string", example = "test")
-    private String statement;
-
 }
