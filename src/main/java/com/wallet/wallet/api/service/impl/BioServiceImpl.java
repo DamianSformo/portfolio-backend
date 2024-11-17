@@ -3,10 +3,7 @@ package com.wallet.wallet.api.service.impl;
 import com.wallet.wallet.api.service.IBioService;
 import com.wallet.wallet.api.service.generic.GenericServiceImpl;
 import com.wallet.wallet.domain.dto.request.BioRequestDto;
-import com.wallet.wallet.domain.dto.response.BioResponseDto;
-import com.wallet.wallet.domain.dto.response.BioResponseDtoLang;
-import com.wallet.wallet.domain.dto.response.StatementResponseDto;
-import com.wallet.wallet.domain.dto.response.StatementResponseDtoLang;
+import com.wallet.wallet.domain.dto.response.*;
 import com.wallet.wallet.domain.mapper.BioMapper;
 import com.wallet.wallet.domain.mapper.IMapper;
 import com.wallet.wallet.domain.model.Bio;
@@ -16,10 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.Tuple;
 import java.util.Locale;
-import java.util.Optional;
 
 import static com.wallet.wallet.domain.enums.EMessageCode.RESOURCE_NOT_FIND_BY_ID;
 
@@ -29,7 +23,6 @@ public class BioServiceImpl extends GenericServiceImpl<Bio, BioResponseDto, BioR
 
     private final BioMapper mapper;
     private final IBioRepository repository;
-
     private final MessageSource messenger;
 
     @Override
@@ -45,24 +38,26 @@ public class BioServiceImpl extends GenericServiceImpl<Bio, BioResponseDto, BioR
 
     @Override
     public BioResponseDtoLang getByIdLang(Long id, String lang) {
-        Bio existingBio = repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
+        return repository.findById(id)
+                .map(bioResponseDto -> {
+                    switch (lang) {
+                        case "es":
+                            return mapper.entityToResponseDtoEs(bioResponseDto);
+                        case "en":
+                            return mapper.entityToResponseDtoEn(bioResponseDto);
+                        default:
+                            throw new IllegalArgumentException("Lenguaje no soportado: " + lang);
+                    }
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
                         new Object[] {id}, Locale.getDefault())));
-
-        BioResponseDtoLang bio = new BioResponseDtoLang();
-        switch (lang) {
-            case "es" -> bio = mapper.entityToResponseDtoEs(existingBio);
-            case "en" -> bio = mapper.entityToResponseDtoEn(existingBio);
-        };
-
-        return bio;
     }
 
     @Override
     public StatementResponseDto getStatementById(Long id) {
-        return repository.getStatement(id).orElseThrow(() ->
+        return mapper.statementProjectionToStatementResponseDto(repository.getStatement(id).orElseThrow(() ->
                 new ResourceNotFoundException(messenger.getMessage(RESOURCE_NOT_FIND_BY_ID.name(),
-                        new Object[] {id}, Locale.getDefault())));
+                        new Object[] {id}, Locale.getDefault()))));
     }
 
     @Override
@@ -71,9 +66,9 @@ public class BioServiceImpl extends GenericServiceImpl<Bio, BioResponseDto, BioR
                 .map(statementResponseDto -> {
                     switch (lang) {
                         case "es":
-                            return mapper.statementEntityToResponseDtoEs(statementResponseDto);
+                            return mapper.statementProjectionToStatementResponseDtoEs(statementResponseDto);
                         case "en":
-                            return mapper.statementEntityToResponseDtoEn(statementResponseDto);
+                            return mapper.statementProjectionToStatementResponseDtoEn(statementResponseDto);
                         default:
                             throw new IllegalArgumentException("Lenguaje no soportado: " + lang);
                     }

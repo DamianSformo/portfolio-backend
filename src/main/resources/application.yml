@@ -9,15 +9,15 @@
 #      ddl-auto: 'update'
 
 spring:
+  #  datasource:
+  #    url: ${SPRING_DATASOURCE_URL}
+  #    username: ${SPRING_DATASOURCE_USERNAME}
+  #    password: ${SPRING_DATASOURCE_PASSWORD}
+#LOCAL
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-  #LOCAL
-#  datasource:
-#  username: root
-#  url: jdbc:mysql://localhost:3306/dbcharta
-#  password: 43824382
+  username: root
+  url: jdbc:mysql://localhost:3306/dbcharta
+  password: 43824382
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true

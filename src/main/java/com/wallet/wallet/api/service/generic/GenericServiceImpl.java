@@ -1,5 +1,8 @@
 package com.wallet.wallet.api.service.generic;
 
+import com.wallet.wallet.domain.dto.request.ProcessingFileRequestDto;
+import com.wallet.wallet.domain.dto.response.ProcessingFileResponseDto;
+import com.wallet.wallet.domain.dto.response.ProcessingFileResponseDtoRes;
 import com.wallet.wallet.domain.mapper.IMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.data.jpa.repository.JpaRepository;

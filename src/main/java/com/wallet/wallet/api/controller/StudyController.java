@@ -13,7 +13,6 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/study")
-
 public record StudyController(IStudyService service) {
 
     @GetMapping("/test")

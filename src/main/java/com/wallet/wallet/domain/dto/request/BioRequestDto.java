@@ -6,33 +6,27 @@ import lombok.Data;
 @Data
 public class BioRequestDto {
 
-    @Schema(type = "string", example = "test")
+    @Schema(description = "Nombre", example = "Marcía Ruíz Bochides")
     private String name;
 
-    @Schema(type = "string", example = "test")
+    @Schema(description = "Url de la foto", example = "...")
     private String urlPhoto;
 
-    @Schema(type = "string", example = "test")
+    @Schema(description = "Texto alternativo de la foto en Español", example = "Foto de Marcia Ruis Bochides")
     private String textPhotoEs;
 
-    @Schema(type = "string", example = "test")
+    @Schema(description = "Texto alternativo de la foto en Inglés", example = "Foto de Marcia Ruis Bochides")
     private String textPhotoEn;
 
-    @Schema(type = "string", example = "test")
+    @Schema(description = "Bio en Español", example = "Foto de Marcia Ruis Bochides")
     private String bioEs;
 
-    @Schema(type = "string", example = "test")
+    @Schema(description = "Bio en Inglés", example = "Foto de Marcia Ruis Bochides")
     private String bioEn;
 
-    @Schema(type = "string", example = "test")
-    private String bioShortEs;
-
-    @Schema(type = "string", example = "test")
-    private String bioShortEn;
-
-    @Schema(type = "string", example = "test")
+    @Schema(description = "Statement en Español", example = "Foto de Marcia Ruis Bochides")
     private String statementEs;
 
-    @Schema(type = "string", example = "test")
+    @Schema(description = "Statement en Inglés", example = "Foto de Marcia Ruis Bochides")
     private String statementEn;
 }
