@@ -9,11 +9,11 @@
 		<relativePath/>
 		<!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.wallet</groupId>
-	<artifactId>wallet</artifactId>
+	<groupId>com.portfolio</groupId>
+	<artifactId>portfolio</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>wallet</name>
-	<description>Wallet project for Spring Boot</description>
+	<name>portfolio</name>
+	<description>Portfolio project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
